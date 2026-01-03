@@ -1,401 +1,729 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ficha Ordem Paranormal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha Ordem Paranormal - App</title>
+    <style>
+        :root {
+            --primary-color: #000;
+            --bg-color: #fff;
+            --border-radius: 12px;
+            --border-width: 2px;
+            --danger-color: #d32f2f;
+        }
 
-<style>
-* {
-  box-sizing: border-box;
-  font-family: Verdana;
-}
+        * {
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+        }
 
-body {
-  background: #f5f5f5;
-  margin: 0;
-  padding: 16px;
-}
+        body {
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px;
+            color: var(--primary-color);
+            padding-bottom: 50px;
+        }
 
-.container {
-  max-width: 900px;
-  margin: auto;
-  background: white;
-  padding: 16px;
-  border-radius: 12px;
-}
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
 
-h2 {
-  margin-top: 32px;
-  border-bottom: 2px solid #000;
-  padding-bottom: 4px;
-  font-style: italic;
-}
+        /* --- Header / Reset --- */
+        .top-bar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: -10px;
+        }
+        
+        .reset-btn {
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            font-size: 0.8rem;
+            border-radius: 5px;
+            cursor: pointer;
+            opacity: 0.8;
+        }
+        .reset-btn:hover { opacity: 1; }
 
-label {
-  font-size: 1.1em;
-  font-weight: bold;
-}
+        /* --- Input Styles Globais --- */
+        input[type="text"], input[type="number"], select, textarea {
+            border: var(--border-width) solid var(--primary-color);
+            border-radius: 8px;
+            padding: 8px;
+            font-size: 1rem;
+            width: 100%;
+            outline: none;
+            background: transparent;
+        }
 
-/* FOTO */
-.photo-container {
-  text-align: center;
-}
+        label {
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+            display: block;
+        }
 
-.photo {
-  width: 180px;
-  height: 180px;
-  border: 2px solid black;
-  border-radius: 50%;
-  margin: auto;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+        /* --- Foto do Personagem --- */
+        .char-photo-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
 
-.photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+        .char-photo {
+            width: 150px;
+            height: 150px;
+            border: var(--border-width) solid var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            background-color: #f0f0f0;
+            cursor: pointer;
+        }
+        
+        .char-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
 
-/* INPUTS */
-input, select, button {
-  width: 100%;
-  padding: 6px;
-  margin: 4px 0;
-}
+        .char-photo span {
+            text-align: center;
+            font-size: 0.8rem;
+            padding: 10px;
+        }
 
-button {
-  cursor: pointer;
-}
+        /* --- Info Básica --- */
+        .basic-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .full-width {
+            grid-column: span 2;
+        }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
-  gap: 8px;
-}
+        /* --- Atributos --- */
+        .attributes {
+            display: flex;
+            justify-content: space-between;
+            gap: 5px;
+        }
 
-/* STATUS */
-.status-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 12px;
-}
+        .attr-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 18%;
+        }
 
-.status-box {
-  border: 1px solid #aaa;
-  padding: 8px;
-  border-radius: 8px;
-}
+        .attr-box input {
+            height: 60px;
+            text-align: center;
+            font-size: 1.5rem;
+            border-radius: 10px;
+        }
 
-/* HABILIDADES */
-.skill {
-  border: 1px solid #ccc;
-  padding: 8px;
-  margin-top: 8px;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
+        .attr-box span {
+            margin-top: 5px;
+            font-weight: bold;
+        }
 
-/* MODAL */
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  justify-content: center;
-  align-items: center;
-}
+        /* --- Status (PV, PD, SAN, PE) --- */
+        .status-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
+            gap: 15px;
+            align-items: center;
+        }
 
-.modal-content {
-  background: white;
-  padding: 16px;
-  width: 90%;
-  max-width: 400px;
-  border-radius: 12px;
-}
+        .bars-column {
+            grid-column: span 2;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
 
-/* PERÍCIAS */
-.pericia {
-  border-bottom: 1px solid #ddd;
-  padding: 8px 0;
-  display: grid;
-  grid-template-columns: 1fr 80px 80px;
-  gap: 8px;
-}
+        .status-box {
+            border: var(--border-width) solid var(--primary-color);
+            border-radius: var(--border-radius);
+            padding: 5px;
+            position: relative;
+        }
 
-@media (max-width: 600px) {
-  .pericia {
-    grid-template-columns: 1fr;
-  }
-}
-</style>
+        .status-header {
+            position: absolute;
+            top: -10px;
+            left: 10px;
+            background: white;
+            padding: 0 5px;
+            font-weight: bold;
+        }
+
+        .status-inputs {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-inputs input {
+            border: none;
+            text-align: center;
+            border-bottom: 1px dashed black;
+            border-radius: 0;
+            padding: 5px 0;
+        }
+
+        .def-circle {
+            width: 80px;
+            height: 80px;
+            border: var(--border-width) solid var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .def-circle input {
+            width: 50px;
+            border: none;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        /* --- Botões e Seções --- */
+        .section-title {
+            font-size: 1.5rem;
+            border-bottom: var(--border-width) solid var(--primary-color);
+            padding-bottom: 5px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        button.add-btn {
+            width: 100%;
+            padding: 15px;
+            background: white;
+            border: var(--border-width) solid var(--primary-color);
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+
+        button.add-btn:active {
+            background: #e0e0e0;
+        }
+
+        /* --- Cards (Habilidade e Inventário) --- */
+        .list-container {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .card-item {
+            border: 1px solid #000;
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #fafafa;
+        }
+
+        .card-info {
+            flex-grow: 1;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .use-btn {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .delete-btn {
+            background: transparent;
+            color: var(--danger-color);
+            border: 1px solid var(--danger-color);
+            padding: 5px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* --- Perícias --- */
+        .skill-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        .skill-name {
+            flex: 2;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .skill-inputs {
+            flex: 2;
+            display: flex;
+            gap: 5px;
+        }
+
+        /* --- Modal --- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .modal {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            border: 2px solid black;
+        }
+
+        .modal h3 { margin-top: 0; }
+        
+        .modal-actions {
+            margin-top: 15px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        @media (max-width: 380px) {
+            .status-grid { grid-template-columns: 1fr; }
+            .bars-column { grid-template-columns: 1fr; }
+            .def-circle { margin: 0 auto; }
+        }
+    </style>
 </head>
-
 <body>
+
 <div class="container">
-
-<button onclick="resetAll()">Resetar Personagem</button>
-
-<!-- FOTO -->
-<div class="photo-container">
-  <div class="photo" id="photo">FOTO</div>
-  <input type="file" accept="image/*" onchange="loadPhoto(event)">
-</div>
-
-<label>Personagem</label>
-<input id="personagem" placeholder="Personagem">
-
-<label>Player</label>
-<input id="player" placeholder="Player">
-
-<label>Origem</label>
-<input id="origem" placeholder="Origem">
-
-<label>Classse</label>
-<input id="classe" placeholder="Classe">
-
-<label>Trilha</label>
-<input id="trilha" placeholder="Trilha">
-
-<label>NEX %</label>
-<input id="nex" placeholder="NEX %">
-
-
-
-<h2>Atributos</h2>
-<div class="grid">
-    <div class="status-box">
-        <label>AGI</label>
-        <input id="agi" placeholder="AGI">
+    
+    <div class="top-bar">
+        <button class="reset-btn" onclick="resetFicha()">⚠ RESETAR FICHA</button>
     </div>
-    <div class="status-box">
-        <label>VIG</label>
-        <input id="vig" placeholder="AGI">
+
+    <div class="char-photo-container">
+        <div class="char-photo" onclick="document.getElementById('file-input').click()">
+            <span id="photo-text">FOTO DO PERSONAGEM<br>(Clique para adicionar)</span>
+            <img id="char-img" src="" alt="Personagem">
+        </div>
+        <input type="file" id="file-input" style="display: none;" accept="image/*" onchange="loadFile(event)">
     </div>
-    <div class="status-box">
-        <label>FOR</label>
-        <input id="for" placeholder="AGI">
+
+    <div class="basic-info">
+        <div class="full-width">
+            <label>Personagem</label>
+            <input type="text" id="char-name" placeholder="Nome do Personagem" oninput="saveInput(this)">
+        </div>
+        <div class="full-width">
+            <label>Player</label>
+            <input type="text" id="player-name" placeholder="Seu Nome" oninput="saveInput(this)">
+        </div>
+        <div>
+            <label>Origem</label>
+            <input type="text" id="origem" oninput="saveInput(this)">
+        </div>
+        <div>
+            <label>Classe</label>
+            <input type="text" id="classe" oninput="saveInput(this)">
+        </div>
+        <div>
+            <label>Trilha</label>
+            <input type="text" id="trilha" oninput="saveInput(this)">
+        </div>
+        <div>
+            <label>NEX %</label>
+            <input type="text" id="nex" oninput="saveInput(this)">
+        </div>
     </div>
-    <div class="status-box">
-        <label>INT</label>
-        <input id="int" placeholder="AGI">
+
+    <hr>
+
+    <div class="attributes">
+        <div class="attr-box"><input type="number" id="attr-agi" oninput="saveInput(this)"><span>AGI</span></div>
+        <div class="attr-box"><input type="number" id="attr-vig" oninput="saveInput(this)"><span>VIG</span></div>
+        <div class="attr-box"><input type="number" id="attr-for" oninput="saveInput(this)"><span>FOR</span></div>
+        <div class="attr-box"><input type="number" id="attr-int" oninput="saveInput(this)"><span>INT</span></div>
+        <div class="attr-box"><input type="number" id="attr-pre" oninput="saveInput(this)"><span>PRE</span></div>
     </div>
-    <div class="status-box">
-        <label>PRE</label>
-        <input id="pre" placeholder="AGI">
+
+    <div class="status-grid">
+        <div class="bars-column">
+            <div class="status-box">
+                <span class="status-header">PV</span>
+                <div class="status-inputs">
+                    <input type="number" placeholder="Atual" id="pv-atual" oninput="saveInput(this)">
+                    <span>/</span>
+                    <input type="number" placeholder="Max" id="pv-max" oninput="saveInput(this)">
+                </div>
+            </div>
+            <div class="status-box">
+                <span class="status-header">SAN</span>
+                <div class="status-inputs">
+                    <input type="number" placeholder="Atual" id="san-atual" oninput="saveInput(this)">
+                    <span>/</span>
+                    <input type="number" placeholder="Max" id="san-max" oninput="saveInput(this)">
+                </div>
+            </div>
+            <div class="status-box">
+                <span class="status-header">PE</span>
+                <div class="status-inputs">
+                    <input type="number" placeholder="Atual" id="pe-atual" oninput="saveInput(this)">
+                    <span>/</span>
+                    <input type="number" placeholder="Max" id="pe-max" oninput="saveInput(this)">
+                </div>
+            </div>
+            <div class="status-box">
+                <span class="status-header">PD</span>
+                <div class="status-inputs">
+                    <input type="number" placeholder="Atual" id="pd-atual" oninput="saveInput(this)">
+                    <span>/</span>
+                    <input type="number" placeholder="Max" id="pd-max" oninput="saveInput(this)">
+                </div>
+            </div>
+        </div>
+        
+        <div class="def-circle">
+            <span>DEF</span>
+            <input type="number" placeholder="0" id="def-total" oninput="saveInput(this)">
+        </div>
+    </div>
+
+    <button class="add-btn" onclick="openModal('ability')">
+        ADICIONAR HABILIDADE <span>+</span>
+    </button>
+    <div id="abilities-list" class="list-container"></div>
+
+    <div class="section-title">Perícias</div>
+    <div id="skills-container"></div>
+
+    <div class="section-title">Inventário</div>
+    <button class="add-btn" onclick="openModal('inventory')">
+        Adicionar ao Inventário <span>+</span>
+    </button>
+    <div id="inventory-list" class="list-container"></div>
+
+</div>
+
+<div class="modal-overlay" id="modal-ability">
+    <div class="modal">
+        <h3>Nova Habilidade</h3>
+        <label>Nome</label>
+        <input type="text" id="new-ability-name">
+        <label style="margin-top: 10px;">Custo</label>
+        <input type="number" id="new-ability-cost">
+        <label style="margin-top: 10px;">Gasta:</label>
+        <select id="new-ability-type">
+            <option value="PE">PE</option>
+            <option value="PD">PD</option>
+        </select>
+        <div class="modal-actions">
+            <button onclick="closeModal('ability')">Cancelar</button>
+            <button onclick="addAbility()" style="background: black; color: white;">Salvar</button>
+        </div>
     </div>
 </div>
 
-<h2>Status</h2>
-<div class="status-grid">
-  <div class="status-box">
-    <label>PV</label>
-    <input id="pvTotal" placeholder="Total">
-    <input id="pvAtual" placeholder="Atual">
-  </div>
-  <div class="status-box">
-    <label>SAN</label>
-    <input id="sanTotal" placeholder="Total">
-    <input id="sanAtual" placeholder="Atual">
-  </div>
-  <div class="status-box">
-    <label>PD</label>
-    <input id="pdTotal" placeholder="Total">
-    <input id="pdAtual" placeholder="Atual">
-  </div>
-  <div class="status-box">
-    <label>PE</label>
-    <input id="peTotal" placeholder="Total">
-    <input id="peAtual" placeholder="Atual">
-  </div>
-</div>
-
-<div class="photo-container" style="padding-top: 1cm;">
-    <label style="font-style: italic;">DEF</label>
-    <div class="photo" id="photo"><input id="def" style="padding-left: 2cm;" style="padding-right: 2cm;"></div>
-</div>
-
-<h2>Habilidades</h2>
-<button onclick="openModal()">Adicionar Habilidade +</button>
-<div id="skills"></div>
-
-<div class="modal" id="modal">
-  <div class="modal-content">
-    <input id="skillName" placeholder="Nome da habilidade">
-    <input id="skillCost" type="number" placeholder="Custo">
-    <select id="skillType">
-      <option value="PE">PE</option>
-      <option value="PD">PD</option>
-    </select>
-    <button onclick="addSkill()">Salvar</button>
-    <button onclick="closeModal()">Cancelar</button>
-  </div>
-</div>
-
-<h2>Perícias</h2>
-<div id="pericias"></div>
-
-<h2>Inventário</h2>
-<button onclick="openInventoryModal()">Adicionar ao Inventário +</button>
-<div id="inventory"></div>
-
-<!-- MODAL HABILIDADE -->
-<div class="modal" id="skillModal">
-  <div class="modal-content">
-    <input id="skillName" placeholder="Nome da habilidade">
-    <input id="skillCost" type="number" placeholder="Custo">
-    <select id="skillType">
-      <option value="PE">PE</option>
-      <option value="PD">PD</option>
-    </select>
-    <button onclick="addSkill()">Salvar</button>
-    <button onclick="closeSkillModal()">Cancelar</button>
-  </div>
-</div>
-
-<!-- MODAL INVENTÁRIO -->
-<div class="modal" id="inventoryModal">
-  <div class="modal-content">
-    <input id="itemName" placeholder="Item do inventário">
-    <button onclick="addItem()">Salvar</button>
-    <button onclick="closeInventoryModal()">Cancelar</button>
-  </div>
-</div>
-
+<div class="modal-overlay" id="modal-inventory">
+    <div class="modal">
+        <h3>Novo Item</h3>
+        <label>Nome do Item</label>
+        <input type="text" id="new-item-name">
+        <label style="margin-top: 10px;">Detalhes (Peso/Categoria)</label>
+        <input type="text" id="new-item-desc">
+        <div class="modal-actions">
+            <button onclick="closeModal('inventory')">Cancelar</button>
+            <button onclick="addItem()" style="background: black; color: white;">Salvar</button>
+        </div>
+    </div>
 </div>
 
 <script>
+    // --- ESTADO GLOBAL (Arrays para listas dinâmicas) ---
+    let abilities = [];
+    let inventory = [];
 
-const skillModal = document.getElementById("skillModal");
-const inventoryModal = document.getElementById("inventoryModal");
-const skills = document.getElementById("skills");
-const inventory = document.getElementById("inventory");
-const photo = document.getElementById("photo");
+    // --- AO CARREGAR A PÁGINA ---
+    window.onload = function() {
+        generateSkills(); // Gera HTML das perícias
+        loadAllData();    // Carrega tudo do LocalStorage
+    };
 
-  
-const periciasLista = [
- "Acrobacia","Adestramento","Artes","Atletismo","Atualidades","Ciências",
- "Crime","Diplomacia","Enganação","Fortitude","Furtividade","Iniciativa",
- "Intimidação","Intuição","Investigação","Luta","Medicina","Ocultismo",
- "Percepção","Pilotagem","Pontaria","Profissão","Reflexos","Religião",
- "Sobrevivência","Tática","Tecnologia","Vontade"
-];
+    // --- Lógica de Reset ---
+    function resetFicha() {
+        if(confirm("Tem certeza que deseja apagar TODOS os dados da ficha?")) {
+            localStorage.clear();
+            location.reload();
+        }
+    }
 
-const periciasDiv = document.getElementById("pericias");
+    // --- Lógica da Foto (Base64 para LocalStorage) ---
+    function loadFile(event) {
+        const file = event.target.files[0];
+        if(!file) return;
 
-periciasLista.forEach((p, i) => {
-  periciasDiv.innerHTML += `
-    <div class="pericia">
-      <strong>${p}</strong>
-      <input data-save="periciaBonus${i}" placeholder="Bônus">
-      <div>
-        <label>Treino</label>
-        <select data-save="periciaTreino${i}">
-          <option>0</option>
-          <option>5</option>
-          <option>10</option>
-          <option>15</option>
-        </select>
-      </div>
-    </div>
-  `;
-});
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const base64Img = e.target.result;
+            // Salvar no LocalStorage
+            try {
+                localStorage.setItem('charPhoto', base64Img);
+                updatePhotoView(base64Img);
+            } catch (err) {
+                alert("A imagem é muito grande para salvar no navegador. Tente uma menor.");
+            }
+        };
+        reader.readAsDataURL(file);
+    }
 
-/* HABILIDADES */
-function openModal() {
-  modal.style.display = "flex";
-}
+    function updatePhotoView(src) {
+        if(!src) return;
+        const img = document.getElementById('char-img');
+        const text = document.getElementById('photo-text');
+        img.src = src;
+        img.style.display = "block";
+        text.style.display = "none";
+    }
 
-function closeModal() {
-  modal.style.display = "none";
-}
+    // --- Salvar Inputs Simples (Texto/Número/Select) ---
+    function saveInput(element) {
+        localStorage.setItem(element.id, element.value);
+    }
 
-function addSkill() {
-  const name = skillName.value;
-  const cost = parseInt(skillCost.value);
-  const type = skillType.value;
+    // --- Carregar Todos os Dados ---
+    function loadAllData() {
+        // 1. Carregar Foto
+        const photo = localStorage.getItem('charPhoto');
+        if(photo) updatePhotoView(photo);
 
-  const div = document.createElement("div");
-  div.className = "skill";
-  div.innerHTML = `
-    <strong>${name}</strong> (${cost} ${type})
-    <button onclick="useSkill(${cost}, '${type}')">Usar</button>
-    <button onclick="this.parentElement.remove(); saveAll()">Remover</button>
-  `;
-  skills.appendChild(div);
-  closeModal();
-  saveAll();
-}
+        // 2. Carregar Inputs Simples (que tenham ID)
+        const inputs = document.querySelectorAll('input[id], select[id]');
+        inputs.forEach(input => {
+            const val = localStorage.getItem(input.id);
+            if(val !== null) input.value = val;
+        });
 
-function useSkill(cost, type) {
-  const field = document.getElementById(type.toLowerCase() + "Atual");
-  field.value = Math.max(0, field.value - cost);
-  saveAll();
-}
+        // 3. Carregar Listas Dinâmicas
+        const storedAbilities = localStorage.getItem('abilitiesList');
+        if(storedAbilities) {
+            abilities = JSON.parse(storedAbilities);
+            renderAbilities();
+        }
 
-/* INVENTÁRIO */
-function openInventoryModal(){ inventoryModal.style.display="flex"; }
-function closeInventoryModal(){ inventoryModal.style.display="none"; }
+        const storedInventory = localStorage.getItem('inventoryList');
+        if(storedInventory) {
+            inventory = JSON.parse(storedInventory);
+            renderInventory();
+        }
+    }
 
-function addItem(){
-  const div = document.createElement("div");
-  div.className = "item-box";
-  div.innerHTML = `
-    <strong>${itemName.value}</strong>
-    <button onclick="this.parentElement.remove(); saveAll()">Remover</button>
-  `;
-  inventory.appendChild(div);
-  closeInventoryModal();
-  saveAll();
-}
+    // --- HABILIDADES ---
+    function addAbility() {
+        const name = document.getElementById('new-ability-name').value;
+        const cost = parseInt(document.getElementById('new-ability-cost').value);
+        const type = document.getElementById('new-ability-type').value;
 
-/* FOTO */
-function loadPhoto(e) {
-  const reader = new FileReader();
-  reader.onload = () => {
-    photo.innerHTML = `<img src="${reader.result}">`;
-    localStorage.setItem("photo", reader.result);
-  };
-  reader.readAsDataURL(e.target.files[0]);
-}
+        if(!name || isNaN(cost)) {
+            alert("Preencha corretamente.");
+            return;
+        }
 
-/* SALVAMENTO */
-function saveAll(){
-  document.querySelectorAll("input, select").forEach(el=>{
-    if(el.id) localStorage.setItem(el.id, el.value);
-  });
-  localStorage.setItem("skills", skills.innerHTML);
-  localStorage.setItem("inventory", inventory.innerHTML);
-}
+        abilities.push({ name, cost, type });
+        saveAbilities();
+        renderAbilities();
+        closeModal('ability');
+    }
 
-function loadAll(){
-  document.querySelectorAll("input, select").forEach(el=>{
-    if(el.id && localStorage.getItem(el.id)) el.value = localStorage.getItem(el.id);
-  });
-  if(localStorage.getItem("photo")) photo.innerHTML=`<img src="${localStorage.getItem("photo")}">`;
-  if(localStorage.getItem("skills")) skills.innerHTML=localStorage.getItem("skills");
-  if(localStorage.getItem("inventory")) inventory.innerHTML=localStorage.getItem("inventory");
-}
+    function deleteAbility(index) {
+        if(confirm("Remover esta habilidade?")) {
+            abilities.splice(index, 1);
+            saveAbilities();
+            renderAbilities();
+        }
+    }
 
-document.addEventListener("input", saveAll);
-window.onload = loadAll;
+    function saveAbilities() {
+        localStorage.setItem('abilitiesList', JSON.stringify(abilities));
+    }
 
-/* RESET */
-function resetAll() {
-  if (confirm("Deseja resetar toda a ficha?")) {
-    localStorage.clear();
-    location.reload();
-  }
-}
+    function renderAbilities() {
+        const list = document.getElementById('abilities-list');
+        list.innerHTML = '';
+        abilities.forEach((ab, index) => {
+            list.innerHTML += `
+                <div class="card-item">
+                    <div class="card-info">
+                        <strong>${ab.name}</strong><br>
+                        <small>Custo: ${ab.cost} ${ab.type}</small>
+                    </div>
+                    <div class="card-actions">
+                        <button class="use-btn" onclick="useAbility('${ab.type}', ${ab.cost})">USAR</button>
+                        <button class="delete-btn" onclick="deleteAbility(${index})">X</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function useAbility(type, cost) {
+        let inputId = type === 'PE' ? 'pe-atual' : 'pd-atual';
+        const inputField = document.getElementById(inputId);
+        let current = parseInt(inputField.value) || 0;
+        
+        inputField.value = current - cost;
+        saveInput(inputField); // Salva o novo valor reduzido
+
+        // Feedback visual
+        inputField.style.backgroundColor = "#ffcccb";
+        setTimeout(() => inputField.style.backgroundColor = "transparent", 300);
+    }
+
+    // --- INVENTÁRIO ---
+    function addItem() {
+        const name = document.getElementById('new-item-name').value;
+        const desc = document.getElementById('new-item-desc').value;
+
+        if(!name) { alert("Nome é obrigatório."); return; }
+
+        inventory.push({ name, desc });
+        saveInventory();
+        renderInventory();
+        closeModal('inventory');
+    }
+
+    function deleteItem(index) {
+        if(confirm("Remover este item?")) {
+            inventory.splice(index, 1);
+            saveInventory();
+            renderInventory();
+        }
+    }
+
+    function saveInventory() {
+        localStorage.setItem('inventoryList', JSON.stringify(inventory));
+    }
+
+    function renderInventory() {
+        const list = document.getElementById('inventory-list');
+        list.innerHTML = '';
+        inventory.forEach((item, index) => {
+            list.innerHTML += `
+                <div class="card-item">
+                    <div class="card-info">
+                        <strong>${item.name}</strong><br>
+                        <small>${item.desc}</small>
+                    </div>
+                    <div class="card-actions">
+                        <button class="delete-btn" onclick="deleteItem(${index})">X</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    // --- PERÍCIAS (Geração + IDs para salvar) ---
+    function generateSkills() {
+        const skills = [
+            "Acrobacia", "Adestramento", "Artes", "Atletismo", "Atualidades", 
+            "Ciências", "Crime", "Diplomacia", "Enganação", "Fortitude", 
+            "Furtividade", "Iniciativa", "Intimidação", "Intuição", "Investigação", 
+            "Luta", "Medicina", "Ocultismo", "Percepção", "Pilotagem", 
+            "Pontaria", "Profissão", "Reflexos", "Religião", "Sobrevivência", 
+            "Tática", "Tecnologia", "Vontade"
+        ];
+
+        const container = document.getElementById('skills-container');
+        // Limpar caso seja chamado duas vezes, mas window.onload garante 1x
+        container.innerHTML = ''; 
+
+        skills.forEach(skill => {
+            const cleanName = skill.replace(/[^a-zA-Z]/g, ""); // ID seguro
+            const row = document.createElement('div');
+            row.className = 'skill-row';
+            row.innerHTML = `
+                <div class="skill-name">${skill}</div>
+                <div class="skill-inputs">
+                    <input type="number" placeholder="+" id="skill-bonus-${cleanName}" oninput="saveInput(this)" style="width: 60px;">
+                    <select id="skill-train-${cleanName}" onchange="saveInput(this)" style="width: 70px;">
+                        <option value="0">-</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                    </select>
+                </div>
+            `;
+            container.appendChild(row);
+        });
+    }
+
+    // --- MODAL CONTROLS ---
+    function openModal(type) {
+        document.getElementById(`modal-${type}`).style.display = 'flex';
+    }
+
+    function closeModal(type) {
+        document.getElementById(`modal-${type}`).style.display = 'none';
+        // Limpar inputs
+        if(type === 'ability') {
+            document.getElementById('new-ability-name').value = '';
+            document.getElementById('new-ability-cost').value = '';
+        } else {
+            document.getElementById('new-item-name').value = '';
+            document.getElementById('new-item-desc').value = '';
+        }
+    }
+
 </script>
 
 </body>
 </html>
+
 
 
 
