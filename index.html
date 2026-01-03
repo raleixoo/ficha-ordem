@@ -157,13 +157,7 @@ button {
 <input id="origem" placeholder="Origem">
 
 <label>Classe</label>
-<select>
-  <option>---</option>
-  <option>Combatente</option>
-  <option>Especialista</option>
-  <option>Ocultista</option>
-  <option>Sobrevivente</option>
-</select>
+<input id="classe" placeholder="Classe>
 
 <label>Trilha</label>
 <input id="trilha" placeholder="Trilha">
@@ -276,13 +270,6 @@ button {
 </div>
 
 <script>
-
-const skillModal = document.getElementById("skillModal");
-const inventoryModal = document.getElementById("inventoryModal");
-const skills = document.getElementById("skills");
-const inventory = document.getElementById("inventory");
-const photo = document.getElementById("photo");
-  
 const periciasLista = [
  "Acrobacia","Adestramento","Artes","Atletismo","Atualidades","Ciências",
  "Crime","Diplomacia","Enganação","Fortitude","Furtividade","Iniciativa",
@@ -312,15 +299,15 @@ periciasLista.forEach((p, i) => {
 });
 
 /* HABILIDADES */
-window.openSkillModal() {
+function openModal() {
   modal.style.display = "flex";
 }
 
-window.closeSkillModal() {
+function closeModal() {
   modal.style.display = "none";
 }
 
-window.addSkill = addSkill() {
+function addSkill() {
   const name = skillName.value;
   const cost = parseInt(skillCost.value);
   const type = skillType.value;
@@ -337,13 +324,11 @@ window.addSkill = addSkill() {
   saveAll();
 }
 
-window.useSkill = function (cost, type) {
+function useSkill(cost, type) {
   const field = document.getElementById(type.toLowerCase() + "Atual");
-  if (!field) return;
   field.value = Math.max(0, field.value - cost);
   saveAll();
-};
-
+}
 
 /* INVENTÁRIO */
 function openInventoryModal(){ inventoryModal.style.display="flex"; }
@@ -403,6 +388,8 @@ function resetAll() {
 
 </body>
 </html>
+
+
 
 
 
