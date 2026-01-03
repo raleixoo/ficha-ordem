@@ -3,26 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ficha Ordem Paranormal - App</title>
+    <title>Ficha Ordem Paranormal - App V3</title>
     <style>
         :root {
-            --primary-color: #000;
+            /* Variáveis Modo Claro (Padrão) */
             --bg-color: #fff;
-            --border-radius: 12px;
-            --border-width: 2px;
+            --text-color: #000;
+            --card-bg: #fafafa;
+            --border-color: #000;
+            --input-bg: transparent;
+            --highlight-color: #f0f0f0;
             --danger-color: #d32f2f;
+            --btn-text: #fff;
+            --btn-bg: #000;
+        }
+
+        /* Variáveis Modo Escuro */
+        body.dark-mode {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --card-bg: #1e1e1e;
+            --border-color: #e0e0e0;
+            --input-bg: #1e1e1e;
+            --highlight-color: #333;
+            --danger-color: #ef5350;
+            --btn-text: #000;
+            --btn-bg: #e0e0e0;
         }
 
         * {
             box-sizing: border-box;
             font-family: 'Courier New', Courier, monospace;
+            transition: background-color 0.3s, color 0.3s;
         }
 
         body {
             background-color: var(--bg-color);
             margin: 0;
             padding: 20px;
-            color: var(--primary-color);
+            color: var(--text-color);
             padding-bottom: 50px;
         }
 
@@ -34,11 +53,12 @@
             gap: 20px;
         }
 
-        /* --- Header / Reset --- */
+        /* --- Top Bar (Reset + Theme) --- */
         .top-bar {
             display: flex;
-            justify-content: flex-end;
-            margin-bottom: -10px;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
         }
         
         .reset-btn {
@@ -49,19 +69,34 @@
             font-size: 0.8rem;
             border-radius: 5px;
             cursor: pointer;
-            opacity: 0.8;
+            opacity: 0.9;
         }
-        .reset-btn:hover { opacity: 1; }
+
+        .theme-btn {
+            background: transparent;
+            border: 2px solid var(--text-color);
+            color: var(--text-color);
+            padding: 5px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+        }
 
         /* --- Input Styles Globais --- */
         input[type="text"], input[type="number"], select, textarea {
-            border: var(--border-width) solid var(--primary-color);
+            border: 2px solid var(--border-color);
             border-radius: 8px;
             padding: 8px;
             font-size: 1rem;
             width: 100%;
             outline: none;
-            background: transparent;
+            background: var(--input-bg);
+            color: var(--text-color);
         }
 
         label {
@@ -81,14 +116,14 @@
         .char-photo {
             width: 150px;
             height: 150px;
-            border: var(--border-width) solid var(--primary-color);
+            border: 2px solid var(--border-color);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
             position: relative;
-            background-color: #f0f0f0;
+            background-color: var(--highlight-color);
             cursor: pointer;
         }
         
@@ -114,6 +149,19 @@
         
         .full-width {
             grid-column: span 2;
+        }
+
+        .nex-container {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .limit-display {
+            font-size: 0.8rem;
+            margin-top: 5px;
+            text-align: center;
+            font-weight: bold;
+            color: var(--danger-color);
         }
 
         /* --- Atributos --- */
@@ -158,39 +206,44 @@
         }
 
         .status-box {
-            border: var(--border-width) solid var(--primary-color);
-            border-radius: var(--border-radius);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
             padding: 5px;
             position: relative;
         }
 
         .status-header {
             position: absolute;
-            top: -10px;
+            top: -12px;
             left: 10px;
-            background: white;
+            background: var(--bg-color);
             padding: 0 5px;
             font-weight: bold;
+            border: 1px solid var(--border-color); /* Borda fina para legibilidade no dark mode */
+            border-radius: 4px;
+            font-size: 0.8rem;
         }
 
         .status-inputs {
             display: flex;
             align-items: center;
             gap: 5px;
+            padding-top: 5px;
         }
 
         .status-inputs input {
             border: none;
             text-align: center;
-            border-bottom: 1px dashed black;
+            border-bottom: 1px dashed var(--border-color);
             border-radius: 0;
             padding: 5px 0;
+            background: transparent;
         }
 
         .def-circle {
             width: 80px;
             height: 80px;
-            border: var(--border-width) solid var(--primary-color);
+            border: 2px solid var(--border-color);
             border-radius: 50%;
             display: flex;
             flex-direction: column;
@@ -203,12 +256,13 @@
             border: none;
             text-align: center;
             font-size: 1.5rem;
+            background: transparent;
         }
 
         /* --- Botões e Seções --- */
         .section-title {
             font-size: 1.5rem;
-            border-bottom: var(--border-width) solid var(--primary-color);
+            border-bottom: 2px solid var(--border-color);
             padding-bottom: 5px;
             margin-top: 30px;
             margin-bottom: 15px;
@@ -217,20 +271,20 @@
         button.add-btn {
             width: 100%;
             padding: 15px;
-            background: white;
-            border: var(--border-width) solid var(--primary-color);
-            border-radius: var(--border-radius);
+            background: var(--card-bg);
+            color: var(--text-color);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
             font-size: 1.1rem;
             font-weight: bold;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: background 0.2s;
         }
 
         button.add-btn:active {
-            background: #e0e0e0;
+            opacity: 0.8;
         }
 
         /* --- Cards (Habilidade e Inventário) --- */
@@ -242,17 +296,13 @@
         }
 
         .card-item {
-            border: 1px solid #000;
+            border: 1px solid var(--border-color);
             padding: 10px;
             border-radius: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #fafafa;
-        }
-
-        .card-info {
-            flex-grow: 1;
+            background-color: var(--card-bg);
         }
 
         .card-actions {
@@ -262,13 +312,14 @@
         }
 
         .use-btn {
-            background: #000;
-            color: #fff;
+            background: var(--btn-bg);
+            color: var(--btn-text);
             border: none;
             padding: 5px 10px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 0.8rem;
+            font-weight: bold;
         }
 
         .delete-btn {
@@ -287,7 +338,7 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 8px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid var(--highlight-color);
             padding-bottom: 5px;
         }
 
@@ -309,19 +360,21 @@
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.7);
             justify-content: center;
             align-items: center;
             z-index: 100;
+            backdrop-filter: blur(2px);
         }
 
         .modal {
-            background: white;
+            background: var(--bg-color);
+            color: var(--text-color);
             padding: 20px;
             border-radius: 12px;
             width: 90%;
             max-width: 400px;
-            border: 2px solid black;
+            border: 2px solid var(--border-color);
         }
 
         .modal h3 { margin-top: 0; }
@@ -331,6 +384,15 @@
             display: flex;
             justify-content: flex-end;
             gap: 10px;
+        }
+
+        .save-btn {
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
         @media (max-width: 380px) {
@@ -345,6 +407,7 @@
 <div class="container">
     
     <div class="top-bar">
+        <button class="theme-btn" onclick="toggleTheme()" id="theme-icon">☀</button>
         <button class="reset-btn" onclick="resetFicha()">⚠ RESETAR FICHA</button>
     </div>
 
@@ -377,13 +440,37 @@
             <label>Trilha</label>
             <input type="text" id="trilha" oninput="saveInput(this)">
         </div>
-        <div>
+        
+        <div class="nex-container">
             <label>NEX %</label>
-            <input type="text" id="nex" oninput="saveInput(this)">
+            <select id="nex" onchange="updateNexLimit(); saveInput(this);">
+                <option value="0">0%</option>
+                <option value="5">5%</option>
+                <option value="10">10%</option>
+                <option value="15">15%</option>
+                <option value="20">20%</option>
+                <option value="25">25%</option>
+                <option value="30">30%</option>
+                <option value="35">35%</option>
+                <option value="40">40%</option>
+                <option value="45">45%</option>
+                <option value="50">50%</option>
+                <option value="55">55%</option>
+                <option value="60">60%</option>
+                <option value="65">65%</option>
+                <option value="70">70%</option>
+                <option value="75">75%</option>
+                <option value="80">80%</option>
+                <option value="85">85%</option>
+                <option value="90">90%</option>
+                <option value="95">95%</option>
+                <option value="99">99%</option>
+            </select>
+            <div id="limit-label" class="limit-display">Limite PE: 1</div>
         </div>
     </div>
 
-    <hr>
+    <hr style="width:100%; border-color: var(--border-color);">
 
     <div class="attributes">
         <div class="attr-box"><input type="number" id="attr-agi" oninput="saveInput(this)"><span>AGI</span></div>
@@ -465,7 +552,7 @@
         </select>
         <div class="modal-actions">
             <button onclick="closeModal('ability')">Cancelar</button>
-            <button onclick="addAbility()" style="background: black; color: white;">Salvar</button>
+            <button class="save-btn" onclick="addAbility()">Salvar</button>
         </div>
     </div>
 </div>
@@ -479,21 +566,67 @@
         <input type="text" id="new-item-desc">
         <div class="modal-actions">
             <button onclick="closeModal('inventory')">Cancelar</button>
-            <button onclick="addItem()" style="background: black; color: white;">Salvar</button>
+            <button class="save-btn" onclick="addItem()">Salvar</button>
         </div>
     </div>
 </div>
 
 <script>
-    // --- ESTADO GLOBAL (Arrays para listas dinâmicas) ---
+    // --- ESTADO GLOBAL ---
     let abilities = [];
     let inventory = [];
 
     // --- AO CARREGAR A PÁGINA ---
     window.onload = function() {
-        generateSkills(); // Gera HTML das perícias
-        loadAllData();    // Carrega tudo do LocalStorage
+        generateSkills();
+        loadAllData();
+        updateNexLimit(); // Garante que o limite apareça correto ao abrir
     };
+
+    // --- MODO ESCURO (DARK MODE) ---
+    function toggleTheme() {
+        const body = document.body;
+        body.classList.toggle('dark-mode');
+        
+        const isDark = body.classList.contains('dark-mode');
+        const icon = document.getElementById('theme-icon');
+        icon.innerText = isDark ? '☾' : '☀';
+        
+        localStorage.setItem('darkMode', isDark);
+    }
+
+    // --- Lógica NEX e Limites ---
+    function updateNexLimit() {
+        const nexSelect = document.getElementById('nex');
+        const limitLabel = document.getElementById('limit-label');
+        const nex = parseInt(nexSelect.value);
+        let limite = 1;
+
+        // Tabela Oficial de Limites de PE por NEX
+        if(nex === 5) limite = 1;
+        else if(nex === 10) limite = 2;
+        else if(nex === 15) limite = 3;
+        else if(nex === 20) limite = 4;
+        else if(nex === 25) limite = 5;
+        else if(nex === 30) limite = 6;
+        else if(nex === 35) limite = 7;
+        else if(nex === 40) limite = 8;
+        else if(nex === 45) limite = 9;
+        else if(nex === 50) limite = 10;
+        else if(nex === 55) limite = 11;
+        else if(nex === 60) limite = 12;
+        else if(nex === 65) limite = 13;
+        else if(nex === 70) limite = 14;
+        else if(nex === 75) limite = 15;
+        else if(nex === 80) limite = 16;
+        else if(nex === 85) limite = 17;
+        else if(nex === 90) limite = 18;
+        else if(nex === 95) limite = 19;
+        else if(nex === 99) limite = 20;
+        else if(nex === 0) limite = 1;
+
+        limitLabel.innerText = "Limite PE/Rodada: " + limite;
+    }
 
     // --- Lógica de Reset ---
     function resetFicha() {
@@ -503,7 +636,7 @@
         }
     }
 
-    // --- Lógica da Foto (Base64 para LocalStorage) ---
+    // --- Lógica da Foto ---
     function loadFile(event) {
         const file = event.target.files[0];
         if(!file) return;
@@ -511,7 +644,6 @@
         const reader = new FileReader();
         reader.onload = function(e) {
             const base64Img = e.target.result;
-            // Salvar no LocalStorage
             try {
                 localStorage.setItem('charPhoto', base64Img);
                 updatePhotoView(base64Img);
@@ -531,25 +663,32 @@
         text.style.display = "none";
     }
 
-    // --- Salvar Inputs Simples (Texto/Número/Select) ---
+    // --- Salvar Inputs ---
     function saveInput(element) {
         localStorage.setItem(element.id, element.value);
     }
 
     // --- Carregar Todos os Dados ---
     function loadAllData() {
-        // 1. Carregar Foto
+        // Tema
+        const darkMode = localStorage.getItem('darkMode') === 'true';
+        if(darkMode) {
+            document.body.classList.add('dark-mode');
+            document.getElementById('theme-icon').innerText = '☾';
+        }
+
+        // Foto
         const photo = localStorage.getItem('charPhoto');
         if(photo) updatePhotoView(photo);
 
-        // 2. Carregar Inputs Simples (que tenham ID)
+        // Inputs
         const inputs = document.querySelectorAll('input[id], select[id]');
         inputs.forEach(input => {
             const val = localStorage.getItem(input.id);
             if(val !== null) input.value = val;
         });
 
-        // 3. Carregar Listas Dinâmicas
+        // Listas
         const storedAbilities = localStorage.getItem('abilitiesList');
         if(storedAbilities) {
             abilities = JSON.parse(storedAbilities);
@@ -617,10 +756,9 @@
         let current = parseInt(inputField.value) || 0;
         
         inputField.value = current - cost;
-        saveInput(inputField); // Salva o novo valor reduzido
+        saveInput(inputField); 
 
-        // Feedback visual
-        inputField.style.backgroundColor = "#ffcccb";
+        inputField.style.backgroundColor = "var(--danger-color)";
         setTimeout(() => inputField.style.backgroundColor = "transparent", 300);
     }
 
@@ -667,7 +805,7 @@
         });
     }
 
-    // --- PERÍCIAS (Geração + IDs para salvar) ---
+    // --- PERÍCIAS ---
     function generateSkills() {
         const skills = [
             "Acrobacia", "Adestramento", "Artes", "Atletismo", "Atualidades", 
@@ -679,11 +817,10 @@
         ];
 
         const container = document.getElementById('skills-container');
-        // Limpar caso seja chamado duas vezes, mas window.onload garante 1x
         container.innerHTML = ''; 
 
         skills.forEach(skill => {
-            const cleanName = skill.replace(/[^a-zA-Z]/g, ""); // ID seguro
+            const cleanName = skill.replace(/[^a-zA-Z]/g, ""); 
             const row = document.createElement('div');
             row.className = 'skill-row';
             row.innerHTML = `
@@ -702,14 +839,13 @@
         });
     }
 
-    // --- MODAL CONTROLS ---
+    // --- MODAL ---
     function openModal(type) {
         document.getElementById(`modal-${type}`).style.display = 'flex';
     }
 
     function closeModal(type) {
         document.getElementById(`modal-${type}`).style.display = 'none';
-        // Limpar inputs
         if(type === 'ability') {
             document.getElementById('new-ability-name').value = '';
             document.getElementById('new-ability-cost').value = '';
@@ -723,9 +859,6 @@
 
 </body>
 </html>
-
-
-
 
 
 
