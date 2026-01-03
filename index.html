@@ -337,11 +337,13 @@ function addSkill() {
   saveAll();
 }
 
-function useSkill(cost, type) {
+window.useSkill = function (cost, type) {
   const field = document.getElementById(type.toLowerCase() + "Atual");
+  if (!field) return;
   field.value = Math.max(0, field.value - cost);
   saveAll();
-}
+};
+
 
 /* INVENTÁRIO */
 function openInventoryModal(){ inventoryModal.style.display="flex"; }
@@ -401,5 +403,6 @@ function resetAll() {
 
 </body>
 </html>
+
 
 
