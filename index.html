@@ -312,15 +312,15 @@ periciasLista.forEach((p, i) => {
 });
 
 /* HABILIDADES */
-function openModal() {
+window.openSkillModal() {
   modal.style.display = "flex";
 }
 
-function closeModal() {
+window.closeSkillModal() {
   modal.style.display = "none";
 }
 
-function addSkill() {
+window.addSkill = addSkill() {
   const name = skillName.value;
   const cost = parseInt(skillCost.value);
   const type = skillType.value;
@@ -403,6 +403,7 @@ function resetAll() {
 
 </body>
 </html>
+
 
 
 
