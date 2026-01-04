@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ficha Ordem Paranormal - App V3</title>
+    <title>Ficha Ordem Paranormal - App V4</title>
     <style>
         :root {
-            /* Variáveis Modo Claro (Padrão) */
+            /* Variáveis Modo Claro */
             --bg-color: #fff;
             --text-color: #000;
             --card-bg: #fafafa;
@@ -16,6 +16,7 @@
             --danger-color: #d32f2f;
             --btn-text: #fff;
             --btn-bg: #000;
+            --warning-color: #ff9800;
         }
 
         /* Variáveis Modo Escuro */
@@ -29,6 +30,7 @@
             --danger-color: #ef5350;
             --btn-text: #000;
             --btn-bg: #e0e0e0;
+            --warning-color: #ffb74d;
         }
 
         * {
@@ -53,7 +55,7 @@
             gap: 20px;
         }
 
-        /* --- Top Bar (Reset + Theme) --- */
+        /* --- Top Bar --- */
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -87,7 +89,7 @@
             height: 40px;
         }
 
-        /* --- Input Styles Globais --- */
+        /* --- Inputs Globais --- */
         input[type="text"], input[type="number"], select, textarea {
             border: 2px solid var(--border-color);
             border-radius: 8px;
@@ -106,7 +108,7 @@
             display: block;
         }
 
-        /* --- Foto do Personagem --- */
+        /* --- Foto --- */
         .char-photo-container {
             display: flex;
             justify-content: center;
@@ -140,7 +142,7 @@
             padding: 10px;
         }
 
-        /* --- Info Básica --- */
+        /* --- Grid Layouts --- */
         .basic-info {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -190,7 +192,7 @@
             font-weight: bold;
         }
 
-        /* --- Status (PV, PD, SAN, PE) --- */
+        /* --- Status --- */
         .status-grid {
             display: grid;
             grid-template-columns: 1fr 1fr auto;
@@ -219,7 +221,7 @@
             background: var(--bg-color);
             padding: 0 5px;
             font-weight: bold;
-            border: 1px solid var(--border-color); /* Borda fina para legibilidade no dark mode */
+            border: 1px solid var(--border-color);
             border-radius: 4px;
             font-size: 0.8rem;
         }
@@ -259,13 +261,16 @@
             background: transparent;
         }
 
-        /* --- Botões e Seções --- */
+        /* --- Botões e Listas --- */
         .section-title {
             font-size: 1.5rem;
             border-bottom: 2px solid var(--border-color);
             padding-bottom: 5px;
             margin-top: 30px;
             margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
         }
 
         button.add-btn {
@@ -283,11 +288,6 @@
             align-items: center;
         }
 
-        button.add-btn:active {
-            opacity: 0.8;
-        }
-
-        /* --- Cards (Habilidade e Inventário) --- */
         .list-container {
             margin-top: 15px;
             display: flex;
@@ -304,6 +304,9 @@
             align-items: center;
             background-color: var(--card-bg);
         }
+
+        .card-info h4 { margin: 0 0 5px 0; font-size: 1rem; }
+        .card-info p { margin: 2px 0; font-size: 0.85rem; }
 
         .card-actions {
             display: flex;
@@ -332,6 +335,42 @@
             font-weight: bold;
         }
 
+        /* --- Proficiências e Checkboxes --- */
+        .prof-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .prof-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .prof-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--btn-bg);
+        }
+
+        /* --- Peso --- */
+        .weight-header {
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+        .weight-warning {
+            color: var(--danger-color);
+            font-weight: bold;
+            display: none;
+            margin-left: 10px;
+        }
+
         /* --- Perícias --- */
         .skill-row {
             display: flex;
@@ -341,20 +380,10 @@
             border-bottom: 1px solid var(--highlight-color);
             padding-bottom: 5px;
         }
+        .skill-name { flex: 2; font-size: 0.9rem; font-weight: bold; }
+        .skill-inputs { flex: 2; display: flex; gap: 5px; }
 
-        .skill-name {
-            flex: 2;
-            font-size: 0.9rem;
-            font-weight: bold;
-        }
-
-        .skill-inputs {
-            flex: 2;
-            display: flex;
-            gap: 5px;
-        }
-
-        /* --- Modal --- */
+        /* --- Modals --- */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -366,7 +395,6 @@
             z-index: 100;
             backdrop-filter: blur(2px);
         }
-
         .modal {
             background: var(--bg-color);
             color: var(--text-color);
@@ -376,16 +404,8 @@
             max-width: 400px;
             border: 2px solid var(--border-color);
         }
-
         .modal h3 { margin-top: 0; }
-        
-        .modal-actions {
-            margin-top: 15px;
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-
+        .modal-actions { margin-top: 15px; display: flex; justify-content: flex-end; gap: 10px; }
         .save-btn {
             background: var(--btn-bg);
             color: var(--btn-text);
@@ -396,8 +416,7 @@
         }
 
         @media (max-width: 380px) {
-            .status-grid { grid-template-columns: 1fr; }
-            .bars-column { grid-template-columns: 1fr; }
+            .status-grid, .bars-column { grid-template-columns: 1fr; }
             .def-circle { margin: 0 auto; }
         }
     </style>
@@ -408,7 +427,7 @@
     
     <div class="top-bar">
         <button class="theme-btn" onclick="toggleTheme()" id="theme-icon">☀</button>
-        <button class="reset-btn" onclick="resetFicha()">⚠ RESETAR FICHA</button>
+        <button class="reset-btn" onclick="resetFicha()">⚠ RESETAR</button>
     </div>
 
     <div class="char-photo-container">
@@ -422,7 +441,7 @@
     <div class="basic-info">
         <div class="full-width">
             <label>Personagem</label>
-            <input type="text" id="char-name" placeholder="Nome do Personagem" oninput="saveInput(this)">
+            <input type="text" id="char-name" placeholder="Nome" oninput="saveInput(this)">
         </div>
         <div class="full-width">
             <label>Player</label>
@@ -432,10 +451,18 @@
             <label>Origem</label>
             <input type="text" id="origem" oninput="saveInput(this)">
         </div>
+        
         <div>
             <label>Classe</label>
-            <input type="text" id="classe" oninput="saveInput(this)">
+            <select id="classe" onchange="saveInput(this)">
+                <option value="">Selecione...</option>
+                <option value="Combatente">Combatente</option>
+                <option value="Especialista">Especialista</option>
+                <option value="Ocultista">Ocultista</option>
+                <option value="Sobrevivente">Sobrevivente</option>
+            </select>
         </div>
+        
         <div>
             <label>Trilha</label>
             <input type="text" id="trilha" oninput="saveInput(this)">
@@ -444,7 +471,6 @@
         <div class="nex-container">
             <label>NEX %</label>
             <select id="nex" onchange="updateNexLimit(); saveInput(this);">
-                <option value="0">0%</option>
                 <option value="5">5%</option>
                 <option value="10">10%</option>
                 <option value="15">15%</option>
@@ -473,69 +499,80 @@
     <hr style="width:100%; border-color: var(--border-color);">
 
     <div class="attributes">
-        <div class="attr-box"><input type="number" id="attr-agi" oninput="saveInput(this)"><span>AGI</span></div>
-        <div class="attr-box"><input type="number" id="attr-vig" oninput="saveInput(this)"><span>VIG</span></div>
-        <div class="attr-box"><input type="number" id="attr-for" oninput="saveInput(this)"><span>FOR</span></div>
-        <div class="attr-box"><input type="number" id="attr-int" oninput="saveInput(this)"><span>INT</span></div>
-        <div class="attr-box"><input type="number" id="attr-pre" oninput="saveInput(this)"><span>PRE</span></div>
+        <div class="attr-box"><input type="number" id="attr-agi" oninput="saveInput(this); updateDerivedStats();"><span>AGI</span></div>
+        <div class="attr-box"><input type="number" id="attr-vig" oninput="saveInput(this); updateDerivedStats();"><span>VIG</span></div>
+        <div class="attr-box"><input type="number" id="attr-for" oninput="saveInput(this); updateDerivedStats();"><span>FOR</span></div>
+        <div class="attr-box"><input type="number" id="attr-int" oninput="saveInput(this); updateDerivedStats();"><span>INT</span></div>
+        <div class="attr-box"><input type="number" id="attr-pre" oninput="saveInput(this); updateDerivedStats();"><span>PRE</span></div>
     </div>
 
     <div class="status-grid">
         <div class="bars-column">
             <div class="status-box">
                 <span class="status-header">PV</span>
-                <div class="status-inputs">
-                    <input type="number" placeholder="Atual" id="pv-atual" oninput="saveInput(this)">
-                    <span>/</span>
-                    <input type="number" placeholder="Max" id="pv-max" oninput="saveInput(this)">
-                </div>
-            </div>
-            <div class="status-box">
-                <span class="status-header">SAN</span>
-                <div class="status-inputs">
-                    <input type="number" placeholder="Atual" id="san-atual" oninput="saveInput(this)">
-                    <span>/</span>
-                    <input type="number" placeholder="Max" id="san-max" oninput="saveInput(this)">
-                </div>
-            </div>
-            <div class="status-box">
-                <span class="status-header">PE</span>
-                <div class="status-inputs">
-                    <input type="number" placeholder="Atual" id="pe-atual" oninput="saveInput(this)">
-                    <span>/</span>
-                    <input type="number" placeholder="Max" id="pe-max" oninput="saveInput(this)">
-                </div>
+                <div class="status-inputs"><input type="number" id="pv-atual" oninput="saveInput(this)"><span>/</span><input type="number" id="pv-max" oninput="saveInput(this)"></div>
             </div>
             <div class="status-box">
                 <span class="status-header">PD</span>
-                <div class="status-inputs">
-                    <input type="number" placeholder="Atual" id="pd-atual" oninput="saveInput(this)">
-                    <span>/</span>
-                    <input type="number" placeholder="Max" id="pd-max" oninput="saveInput(this)">
-                </div>
+                <div class="status-inputs"><input type="number" id="pd-atual" oninput="saveInput(this)"><span>/</span><input type="number" id="pd-max" oninput="saveInput(this)"></div>
             </div>
         </div>
-        
-        <div class="def-circle">
-            <span>DEF</span>
-            <input type="number" placeholder="0" id="def-total" oninput="saveInput(this)">
-        </div>
+        <div class="def-circle"><span>DEF</span><input type="number" id="def-total" oninput="saveInput(this)"></div>
     </div>
 
-    <button class="add-btn" onclick="openModal('ability')">
-        ADICIONAR HABILIDADE <span>+</span>
-    </button>
+    <div class="section-title">Ataques</div>
+    <button class="add-btn" onclick="openModal('attack')">ADICIONAR ATAQUE <span>+</span></button>
+    <div id="attacks-list" class="list-container"></div>
+
+    <div class="section-title">Habilidades</div>
+    <button class="add-btn" onclick="openModal('ability')">ADICIONAR HABILIDADE <span>+</span></button>
     <div id="abilities-list" class="list-container"></div>
 
     <div class="section-title">Perícias</div>
     <div id="skills-container"></div>
 
-    <div class="section-title">Inventário</div>
-    <button class="add-btn" onclick="openModal('inventory')">
-        Adicionar ao Inventário <span>+</span>
-    </button>
+    <div class="section-title" style="flex-wrap: wrap;">
+        Inventário
+        <div class="weight-header">
+            Peso: <span id="weight-current">0</span> / <span id="weight-max">0</span>
+            <span id="weight-alert" class="weight-warning">CUIDADO: VOCÊ ESTÁ MUITO PESADO!</span>
+        </div>
+    </div>
+    
+    <label>Proficiências:</label>
+    <div class="prof-container">
+        <div class="prof-group"><input type="checkbox" id="prof-simples" onchange="saveCheck(this)"><label>Armas Simples</label></div>
+        <div class="prof-group"><input type="checkbox" id="prof-taticas" onchange="saveCheck(this)"><label>Armas Táticas</label></div>
+        <div class="prof-group"><input type="checkbox" id="prof-leve" onchange="saveCheck(this)"><label>Proteções Leves</label></div>
+        <div class="prof-group"><input type="checkbox" id="prof-pesada" onchange="saveCheck(this)"><label>Proteções Pesadas</label></div>
+    </div>
+
+    <button class="add-btn" onclick="openModal('inventory')">Adicionar Item <span>+</span></button>
     <div id="inventory-list" class="list-container"></div>
 
+</div>
+
+<div class="modal-overlay" id="modal-attack">
+    <div class="modal">
+        <h3>Novo Ataque</h3>
+        <label>Nome do Ataque</label>
+        <input type="text" id="new-attack-name">
+        
+        <label style="margin-top: 10px;">Atributo Base</label>
+        <select id="new-attack-attr">
+            <option value="AGI">Agilidade (AGI)</option>
+            <option value="FOR">Força (FOR)</option>
+        </select>
+
+        <label style="margin-top: 10px;">Dano (ex: 1d6, 2d8)</label>
+        <input type="text" id="new-attack-dmg">
+        <small style="font-size: 0.7rem; color: #888;">Se FOR for escolhido, somaremos o atributo automaticamente.</small>
+
+        <div class="modal-actions">
+            <button onclick="closeModal('attack')">Cancelar</button>
+            <button class="save-btn" onclick="addAttack()">Salvar</button>
+        </div>
+    </div>
 </div>
 
 <div class="modal-overlay" id="modal-ability">
@@ -562,8 +599,10 @@
         <h3>Novo Item</h3>
         <label>Nome do Item</label>
         <input type="text" id="new-item-name">
-        <label style="margin-top: 10px;">Detalhes (Peso/Categoria)</label>
+        <label style="margin-top: 10px;">Descrição</label>
         <input type="text" id="new-item-desc">
+        <label style="margin-top: 10px;">Peso</label>
+        <input type="number" id="new-item-weight" value="1">
         <div class="modal-actions">
             <button onclick="closeModal('inventory')">Cancelar</button>
             <button class="save-btn" onclick="addItem()">Salvar</button>
@@ -575,130 +614,209 @@
     // --- ESTADO GLOBAL ---
     let abilities = [];
     let inventory = [];
+    let attacks = [];
 
-    // --- AO CARREGAR A PÁGINA ---
+    // --- AO CARREGAR ---
     window.onload = function() {
         generateSkills();
         loadAllData();
-        updateNexLimit(); // Garante que o limite apareça correto ao abrir
+        updateNexLimit();
+        updateDerivedStats(); // Calcula pesos e atualiza ataques
     };
 
-    // --- MODO ESCURO (DARK MODE) ---
+    // --- FUNÇÕES GERAIS ---
     function toggleTheme() {
         const body = document.body;
         body.classList.toggle('dark-mode');
-        
         const isDark = body.classList.contains('dark-mode');
-        const icon = document.getElementById('theme-icon');
-        icon.innerText = isDark ? '☾' : '☀';
-        
+        document.getElementById('theme-icon').innerText = isDark ? '☾' : '☀';
         localStorage.setItem('darkMode', isDark);
     }
 
-    // --- Lógica NEX e Limites ---
-    function updateNexLimit() {
-        const nexSelect = document.getElementById('nex');
-        const limitLabel = document.getElementById('limit-label');
-        const nex = parseInt(nexSelect.value);
-        let limite = 1;
-
-        // Tabela Oficial de Limites de PE por NEX
-        if(nex === 5) limite = 1;
-        else if(nex === 10) limite = 2;
-        else if(nex === 15) limite = 3;
-        else if(nex === 20) limite = 4;
-        else if(nex === 25) limite = 5;
-        else if(nex === 30) limite = 6;
-        else if(nex === 35) limite = 7;
-        else if(nex === 40) limite = 8;
-        else if(nex === 45) limite = 9;
-        else if(nex === 50) limite = 10;
-        else if(nex === 55) limite = 11;
-        else if(nex === 60) limite = 12;
-        else if(nex === 65) limite = 13;
-        else if(nex === 70) limite = 14;
-        else if(nex === 75) limite = 15;
-        else if(nex === 80) limite = 16;
-        else if(nex === 85) limite = 17;
-        else if(nex === 90) limite = 18;
-        else if(nex === 95) limite = 19;
-        else if(nex === 99) limite = 20;
-        else if(nex === 0) limite = 1;
-
-        limitLabel.innerText = "Limite PE/PD por Rodada: " + limite;
-    }
-
-    // --- Lógica de Reset ---
     function resetFicha() {
-        if(confirm("Tem certeza que deseja apagar TODOS os dados da ficha?")) {
+        if(confirm("Tem certeza que deseja apagar TODOS os dados?")) {
             localStorage.clear();
             location.reload();
         }
     }
 
-    // --- Lógica da Foto ---
+    function updateDerivedStats() {
+        updateWeight();
+        renderAttacks(); // Re-renderiza ataques pois o texto dos dados depende dos atributos
+    }
+
+    function saveInput(element) {
+        localStorage.setItem(element.id, element.value);
+    }
+    
+    function saveCheck(element) {
+        localStorage.setItem(element.id, element.checked);
+    }
+
     function loadFile(event) {
         const file = event.target.files[0];
         if(!file) return;
-
         const reader = new FileReader();
         reader.onload = function(e) {
             const base64Img = e.target.result;
-            try {
-                localStorage.setItem('charPhoto', base64Img);
-                updatePhotoView(base64Img);
-            } catch (err) {
-                alert("A imagem é muito grande para salvar no navegador. Tente uma menor.");
-            }
+            try { localStorage.setItem('charPhoto', base64Img); updatePhotoView(base64Img); } 
+            catch (err) { alert("Imagem muito grande."); }
         };
         reader.readAsDataURL(file);
     }
 
     function updatePhotoView(src) {
         if(!src) return;
-        const img = document.getElementById('char-img');
-        const text = document.getElementById('photo-text');
-        img.src = src;
-        img.style.display = "block";
-        text.style.display = "none";
+        document.getElementById('char-img').src = src;
+        document.getElementById('char-img').style.display = "block";
+        document.getElementById('photo-text').style.display = "none";
     }
 
-    // --- Salvar Inputs ---
-    function saveInput(element) {
-        localStorage.setItem(element.id, element.value);
+    function updateNexLimit() {
+        const nex = parseInt(document.getElementById('nex').value) || 5;
+        const limits = {5:1,10:2,15:3,20:4,25:5,30:6,35:7,40:8,45:9,50:10,55:11,60:12,65:13,70:14,75:15,80:16,85:17,90:18,95:19,99:20};
+        document.getElementById('limit-label').innerText = "Limite PE/Rodada: " + (limits[nex] || 1);
     }
 
-    // --- Carregar Todos os Dados ---
     function loadAllData() {
-        // Tema
-        const darkMode = localStorage.getItem('darkMode') === 'true';
-        if(darkMode) {
+        if(localStorage.getItem('darkMode') === 'true') {
             document.body.classList.add('dark-mode');
             document.getElementById('theme-icon').innerText = '☾';
         }
-
-        // Foto
+        
         const photo = localStorage.getItem('charPhoto');
         if(photo) updatePhotoView(photo);
 
-        // Inputs
-        const inputs = document.querySelectorAll('input[id], select[id]');
-        inputs.forEach(input => {
-            const val = localStorage.getItem(input.id);
-            if(val !== null) input.value = val;
+        document.querySelectorAll('input, select').forEach(el => {
+            if(el.type === 'checkbox') {
+                el.checked = localStorage.getItem(el.id) === 'true';
+            } else {
+                const val = localStorage.getItem(el.id);
+                if(val !== null) el.value = val;
+            }
         });
 
-        // Listas
-        const storedAbilities = localStorage.getItem('abilitiesList');
-        if(storedAbilities) {
-            abilities = JSON.parse(storedAbilities);
-            renderAbilities();
-        }
+        if(localStorage.getItem('abilitiesList')) abilities = JSON.parse(localStorage.getItem('abilitiesList'));
+        if(localStorage.getItem('inventoryList')) inventory = JSON.parse(localStorage.getItem('inventoryList'));
+        if(localStorage.getItem('attacksList')) attacks = JSON.parse(localStorage.getItem('attacksList'));
 
-        const storedInventory = localStorage.getItem('inventoryList');
-        if(storedInventory) {
-            inventory = JSON.parse(storedInventory);
+        renderAbilities();
+        renderInventory();
+        // renderAttacks é chamado em updateDerivedStats no final do load
+    }
+
+    // --- ATAQUES ---
+    function addAttack() {
+        const name = document.getElementById('new-attack-name').value;
+        const attr = document.getElementById('new-attack-attr').value;
+        const dmg = document.getElementById('new-attack-dmg').value;
+        
+        if(!name || !dmg) { alert("Preencha nome e dano."); return; }
+
+        attacks.push({ name, attr, dmg });
+        localStorage.setItem('attacksList', JSON.stringify(attacks));
+        renderAttacks();
+        closeModal('attack');
+    }
+
+    function deleteAttack(index) {
+        if(confirm("Remover ataque?")) {
+            attacks.splice(index, 1);
+            localStorage.setItem('attacksList', JSON.stringify(attacks));
+            renderAttacks();
+        }
+    }
+
+    function renderAttacks() {
+        const list = document.getElementById('attacks-list');
+        list.innerHTML = '';
+        
+        // Pegar valores atuais
+        const agiVal = document.getElementById('attr-agi').value || 0;
+        const forVal = document.getElementById('attr-for').value || 0;
+
+        attacks.forEach((atk, index) => {
+            let dicePool = (atk.attr === 'FOR') ? forVal : agiVal;
+            if(dicePool < 1) dicePool = 0; // Evitar dados negativos
+            
+            let dmgDisplay = atk.dmg;
+            if(atk.attr === 'FOR' && parseInt(forVal) > 0) {
+                dmgDisplay += ` + ${forVal}`;
+            }
+
+            list.innerHTML += `
+                <div class="card-item">
+                    <div class="card-info">
+                        <h4>${atk.name} (${atk.attr})</h4>
+                        <p>Teste: ${dicePool}d20</p>
+                        <p>Dano: ${dmgDisplay}</p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="delete-btn" onclick="deleteAttack(${index})">X</button>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    // --- INVENTÁRIO & PESO ---
+    function addItem() {
+        const name = document.getElementById('new-item-name').value;
+        const desc = document.getElementById('new-item-desc').value;
+        const weight = parseFloat(document.getElementById('new-item-weight').value) || 0;
+
+        if(!name) { alert("Nome é obrigatório."); return; }
+
+        inventory.push({ name, desc, weight });
+        localStorage.setItem('inventoryList', JSON.stringify(inventory));
+        renderInventory();
+        closeModal('inventory');
+    }
+
+    function deleteItem(index) {
+        if(confirm("Remover item?")) {
+            inventory.splice(index, 1);
+            localStorage.setItem('inventoryList', JSON.stringify(inventory));
             renderInventory();
+        }
+    }
+
+    function renderInventory() {
+        const list = document.getElementById('inventory-list');
+        list.innerHTML = '';
+        inventory.forEach((item, index) => {
+            list.innerHTML += `
+                <div class="card-item">
+                    <div class="card-info">
+                        <strong>${item.name}</strong> <small>(${item.weight})</small><br>
+                        <small>${item.desc}</small>
+                    </div>
+                    <div class="card-actions">
+                        <button class="delete-btn" onclick="deleteItem(${index})">X</button>
+                    </div>
+                </div>
+            `;
+        });
+        updateWeight();
+    }
+
+    function updateWeight() {
+        const forVal = parseInt(document.getElementById('attr-for').value) || 0;
+        const maxWeight = forVal * 5;
+        let currentWeight = 0;
+        
+        inventory.forEach(item => {
+            currentWeight += (parseFloat(item.weight) || 0);
+        });
+
+        document.getElementById('weight-max').innerText = maxWeight;
+        document.getElementById('weight-current').innerText = currentWeight;
+
+        const alertBox = document.getElementById('weight-alert');
+        if(currentWeight > maxWeight) {
+            alertBox.style.display = "inline";
+        } else {
+            alertBox.style.display = "none";
         }
     }
 
@@ -708,27 +826,20 @@
         const cost = parseInt(document.getElementById('new-ability-cost').value);
         const type = document.getElementById('new-ability-type').value;
 
-        if(!name || isNaN(cost)) {
-            alert("Preencha corretamente.");
-            return;
-        }
+        if(!name || isNaN(cost)) return;
 
         abilities.push({ name, cost, type });
-        saveAbilities();
+        localStorage.setItem('abilitiesList', JSON.stringify(abilities));
         renderAbilities();
         closeModal('ability');
     }
 
     function deleteAbility(index) {
-        if(confirm("Remover esta habilidade?")) {
+        if(confirm("Remover habilidade?")) {
             abilities.splice(index, 1);
-            saveAbilities();
+            localStorage.setItem('abilitiesList', JSON.stringify(abilities));
             renderAbilities();
         }
-    }
-
-    function saveAbilities() {
-        localStorage.setItem('abilitiesList', JSON.stringify(abilities));
     }
 
     function renderAbilities() {
@@ -752,57 +863,11 @@
 
     function useAbility(type, cost) {
         let inputId = type === 'PE' ? 'pe-atual' : 'pd-atual';
-        const inputField = document.getElementById(inputId);
-        let current = parseInt(inputField.value) || 0;
-        
-        inputField.value = current - cost;
-        saveInput(inputField); 
-
-        inputField.style.backgroundColor = "var(--danger-color)";
-        setTimeout(() => inputField.style.backgroundColor = "transparent", 300);
-    }
-
-    // --- INVENTÁRIO ---
-    function addItem() {
-        const name = document.getElementById('new-item-name').value;
-        const desc = document.getElementById('new-item-desc').value;
-
-        if(!name) { alert("Nome é obrigatório."); return; }
-
-        inventory.push({ name, desc });
-        saveInventory();
-        renderInventory();
-        closeModal('inventory');
-    }
-
-    function deleteItem(index) {
-        if(confirm("Remover este item?")) {
-            inventory.splice(index, 1);
-            saveInventory();
-            renderInventory();
-        }
-    }
-
-    function saveInventory() {
-        localStorage.setItem('inventoryList', JSON.stringify(inventory));
-    }
-
-    function renderInventory() {
-        const list = document.getElementById('inventory-list');
-        list.innerHTML = '';
-        inventory.forEach((item, index) => {
-            list.innerHTML += `
-                <div class="card-item">
-                    <div class="card-info">
-                        <strong>${item.name}</strong><br>
-                        <small>${item.desc}</small>
-                    </div>
-                    <div class="card-actions">
-                        <button class="delete-btn" onclick="deleteItem(${index})">X</button>
-                    </div>
-                </div>
-            `;
-        });
+        const el = document.getElementById(inputId);
+        el.value = (parseInt(el.value) || 0) - cost;
+        saveInput(el);
+        el.style.backgroundColor = "var(--danger-color)";
+        setTimeout(() => el.style.backgroundColor = "transparent", 300);
     }
 
     // --- PERÍCIAS ---
@@ -815,27 +880,23 @@
             "Pontaria", "Profissão", "Reflexos", "Religião", "Sobrevivência", 
             "Tática", "Tecnologia", "Vontade"
         ];
-
         const container = document.getElementById('skills-container');
         container.innerHTML = ''; 
-
         skills.forEach(skill => {
-            const cleanName = skill.replace(/[^a-zA-Z]/g, ""); 
-            const row = document.createElement('div');
-            row.className = 'skill-row';
-            row.innerHTML = `
-                <div class="skill-name">${skill}</div>
-                <div class="skill-inputs">
-                    <input type="number" placeholder="+" id="skill-bonus-${cleanName}" oninput="saveInput(this)" style="width: 60px;">
-                    <select id="skill-train-${cleanName}" onchange="saveInput(this)" style="width: 70px;">
-                        <option value="0">-</option>
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="15">15</option>
-                    </select>
-                </div>
-            `;
-            container.appendChild(row);
+            const id = skill.replace(/[^a-zA-Z]/g, ""); 
+            container.innerHTML += `
+                <div class="skill-row">
+                    <div class="skill-name">${skill}</div>
+                    <div class="skill-inputs">
+                        <input type="number" placeholder="+" id="skill-bonus-${id}" oninput="saveInput(this)" style="width: 60px;">
+                        <select id="skill-train-${id}" onchange="saveInput(this)" style="width: 70px;">
+                            <option value="0">-</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                        </select>
+                    </div>
+                </div>`;
         });
     }
 
@@ -843,22 +904,16 @@
     function openModal(type) {
         document.getElementById(`modal-${type}`).style.display = 'flex';
     }
-
     function closeModal(type) {
         document.getElementById(`modal-${type}`).style.display = 'none';
-        if(type === 'ability') {
-            document.getElementById('new-ability-name').value = '';
-            document.getElementById('new-ability-cost').value = '';
-        } else {
-            document.getElementById('new-item-name').value = '';
-            document.getElementById('new-item-desc').value = '';
-        }
+        const inputs = document.querySelectorAll(`#modal-${type} input`);
+        inputs.forEach(i => i.value = '');
     }
 
 </script>
-
 </body>
 </html>
+
 
 
 
